@@ -6,7 +6,7 @@
 /*   By: mbonnet <mbonnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 09:52:18 by mbonnet           #+#    #+#             */
-/*   Updated: 2022/05/18 09:52:19 by mbonnet          ###   ########.fr       */
+/*   Updated: 2022/05/18 10:55:48 by mbonnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ private:
 	int					_sockServer;
 	struct sockaddr_in6	_addrServer;
 	std::vector<pollfd>	_pfds;
+	std::vector<Client>	_client;
 	Server(void){};
 };
 
