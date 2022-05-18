@@ -6,7 +6,7 @@
 /*   By: mbonnet <mbonnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 09:52:15 by mbonnet           #+#    #+#             */
-/*   Updated: 2022/05/18 10:55:30 by mbonnet          ###   ########.fr       */
+/*   Updated: 2022/05/18 11:53:28 by mbonnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void Server::run(void)
 			if (this->_pfds[i].fd == this->_sockServer)
 				this->AddClient();
 			else
-				this->Reception(i);
+				this->protocolReception(i);
 		}
 	} while (1);
 }
@@ -125,38 +125,33 @@ void	Server::closedAndPreventClient(int i)
 	close(this->_pfds[i].fd);
 	std::cerr << VIOLET << "---SERVER---  Connection" << ROUGE << " closed " << VIOLET << "fd : " << this->_pfds[i].fd << BLANC << std::endl;
 	this->_pfds.erase((this->_pfds.begin() + i));
-	//this->_pfds[i].fd = -1;
-	//int tmp = this->_pfds.size();
-	//for (int i = 0; i < tmp; i++)
-	//{
-	//	if (this->_pfds[i].fd == -1)
-	//	{
-	//		for(int j = i; j < tmp - 1; j++)
-	//			this->_pfds[j].fd = this->_pfds[j+1].fd;
-	//		i--;
-	//		tmp--;
-	//	}
-	//}
+	this->_client.erase((this->_client.begin() + i));
+}
+
+int	Server::Reception(std::string *line, int *len, int i)
+{
+	char buffer[1];
+	int rc = 0;
+
+	while ((rc = recv(this->_pfds[i].fd, buffer, sizeof(buffer), 0)) >= 0)
+	{
+		(*line) += buffer[0];
+		*len += rc;
+		memset(&buffer, 0, 1);
+	}
+	return (rc);
 }
 
 //receptionne les message 
-void	Server::Reception(int i)
+void	Server::protocolReception(int i)
 {
-	char buffer[4];
-	int rc = 0;
-
+	int rc;
 	do
 	{
-		std::cout << "coucou" << std::endl;
 		std::string line;
 		int len = 0;
-		while ((rc = recv(this->_pfds[i].fd, buffer, sizeof(buffer), 0)) >= 0)
-		{
-			len += rc;
-			line += buffer;
-			memset(&buffer, 0, 4);
-		}
-		if (rc == 0 || line == "end")
+		rc = this->Reception(&line, &len, i);
+		if (!line.compare("end"))
 		{
 			this->closedAndPreventClient(i);
 			break;
@@ -176,8 +171,5 @@ void	Server::Reception(int i)
 				throw std::runtime_error(ROUGE"recv() failed"BLANC);
 			break;
 		}
-		rc = send(this->_pfds[i].fd, buffer, len, 0);
-		if (rc < 0)
-			throw std::runtime_error(ROUGE"send() failed"BLANC);
 	} while(true);
 }
