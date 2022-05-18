@@ -1,23 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.hpp                                          :+:      :+:    :+:   */
+/*   client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbonnet <mbonnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/18 09:52:26 by mbonnet           #+#    #+#             */
-/*   Updated: 2022/05/18 09:52:27 by mbonnet          ###   ########.fr       */
+/*   Created: 2022/05/18 09:53:33 by mbonnet           #+#    #+#             */
+/*   Updated: 2022/05/18 09:55:51 by mbonnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILS_HPP
-#define UTILS_HPP
+#ifndef CLIENT_HPP
+#define CLIENT_HPP
 
-#include <vector>
-#include <iostream>
+#include "../irc.hpp"
 
-typedef std::vector<std::string> strvec;
+class Client
+{
+public:
+	Client(void){};
+	~Client(void){};
+private:
+	//int			_fd;
+	//int			_channel;
+	//bool		_identify;
+	//std::string	_username;
+	//std::string	_nickname;
+};
 
-strvec split(const char *str, char c);
+void	msgServer(std::string str);
 
-#endif 
+#endif
