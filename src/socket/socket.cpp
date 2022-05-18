@@ -6,7 +6,7 @@
 /*   By: mbonnet <mbonnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 09:52:15 by mbonnet           #+#    #+#             */
-/*   Updated: 2022/05/18 17:28:26 by mbonnet          ###   ########.fr       */
+/*   Updated: 2022/05/18 18:19:22 by mbonnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,12 @@ void	Server::closedAndPreventClient(int i)
 	this->_client.erase((this->_client.begin() + i));
 }
 
+void	Server::sendMessage(int i, std::string msg)
+{
+	std::cout << "coucou" << std::endl; 
+	send(this->_pfds[i].fd, msg.c_str() , sizeof(msg), 0);
+}
+
 int	Server::Reception(std::string *line, int *len, int i)
 {
 	char buffer[1];
@@ -233,5 +239,6 @@ void	Server::protocolReception(int i)
 				throw std::runtime_error(ROUGE"recv() failed"BLANC);
 			break;
 		}
+		
 	} while(true);
 }

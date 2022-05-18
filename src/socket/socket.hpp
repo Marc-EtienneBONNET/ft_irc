@@ -6,7 +6,7 @@
 /*   By: mbonnet <mbonnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 09:52:18 by mbonnet           #+#    #+#             */
-/*   Updated: 2022/05/18 14:40:30 by mbonnet          ###   ########.fr       */
+/*   Updated: 2022/05/18 17:56:34 by mbonnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ public:
 	int		parsing(int i, std::string line);					//traitement des information receptionner
 	void	printReception(int i, int len, std::string line);			//ecriture de la reception
 	int		managementOrdered(int i, std::string line);
+	void	sendMessage(int i, std::string msg);
 
 private:
 	int					_port;
