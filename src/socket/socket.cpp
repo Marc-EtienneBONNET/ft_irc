@@ -6,7 +6,7 @@
 /*   By: mbonnet <mbonnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 09:52:15 by mbonnet           #+#    #+#             */
-/*   Updated: 2022/05/18 11:53:28 by mbonnet          ###   ########.fr       */
+/*   Updated: 2022/05/18 17:28:26 by mbonnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ void	Server::AddClient(void)
 //previent le client de la fermeture, ferme le fd du client et suprime l element du tableau 
 void	Server::closedAndPreventClient(int i)
 {
-	send(this->_pfds[i].fd, "end", sizeof("end"), 0);
+	send(this->_pfds[i].fd, "/end", sizeof("/end"), 0);
 	close(this->_pfds[i].fd);
 	std::cerr << VIOLET << "---SERVER---  Connection" << ROUGE << " closed " << VIOLET << "fd : " << this->_pfds[i].fd << BLANC << std::endl;
 	this->_pfds.erase((this->_pfds.begin() + i));
@@ -142,6 +142,69 @@ int	Server::Reception(std::string *line, int *len, int i)
 	return (rc);
 }
 
+int		Server::managementOrdered(int i, std::string line)
+{
+	std::string cmd;
+	std::string parametre;
+	size_t y = 0;
+
+	for (y = 0; y < line.size(); y++)
+		if (whitesapece(line[y]) == true)
+			break;
+	char tmp[y];
+	line.copy(tmp, y ,0);
+	tmp[y] = '\0';
+	cmd = tmp;
+	while (whitesapece(line[y]) == true)
+		y++;
+	char tmp2[line.size() - y];
+	line.copy(tmp2, line.size() - y ,y);
+	tmp2[line.size() - y] = '\0';
+	parametre = tmp2;
+	if (cmd == "/password" && parametre == this->_password)
+		this->_client[i].setIdentify(true);
+	else if (cmd == "/password" && parametre != this->_password)
+		return (-1);
+	else if (cmd == "/username")
+		this->_client[i].setUsername(parametre);
+	else if (cmd == "/nickname")
+		this->_client[i].setNickname(parametre);
+	else if (cmd == "/channel")
+	{
+		for (size_t x = 0; x < parametre.size(); x++)
+			if (parametre[x] < 48 || parametre[x] > 39)
+				return (-2);
+		this->_client[i].setChannel(std::atoi(parametre.c_str()));
+	}
+	return (0);
+}
+
+int	Server::parsing(int i, std::string line)
+{
+	if (this->_client[i].getIdentify() == false && line[0] == '/')
+		return (this->managementOrdered(i, line));
+	else if (this->_client[i].getIdentify() == false && line[0] != '/')
+		return (-1);
+	else if (this->_client[i].getIdentify() == true && line == "/end")
+		return (-1);
+	else if (this->_client[i].getIdentify() == true && line[0] == '/')
+		return (this->managementOrdered(i, line));
+	else if (this->_client[i].getIdentify() == true)
+		return (1);
+	return (-1);
+}
+
+void	Server::printReception(int i, int len, std::string line)
+{
+	std::cerr << BLEU << "------------------------------------------------"<< BLANC << std::endl;
+	std::cerr << BLEU << "RECEPTION"<< BLANC << std::endl;
+	std::cerr << BLEU << "Username  : (" << this->_client[i].getUsername() << ")" << " Nickname  : (" << this->_client[i].getNickname() << ")" << BLANC << std::endl;
+	std::cerr << BLEU << "Channel   : (" << this->_client[i].getChannel() << ")" << " Fd        : (" << this->_pfds[i].fd << ")" << BLANC << std::endl;
+	std::cerr << BLEU << "taille    : ("<< len << "bits)"<< BLANC << std::endl;
+	std::cerr << BLEU << "message   : ("<< line << ")"<< BLANC << std::endl;
+	std::cerr << BLEU << "------------------------------------------------"<< BLANC << std::endl;
+}
+
 //receptionne les message 
 void	Server::protocolReception(int i)
 {
@@ -151,19 +214,18 @@ void	Server::protocolReception(int i)
 		std::string line;
 		int len = 0;
 		rc = this->Reception(&line, &len, i);
-		if (!line.compare("end"))
+		int pars = this->parsing(i, line);
+		if (pars == 1)
+			this->printReception(i, len, line);
+		else if (pars == -1)
 		{
 			this->closedAndPreventClient(i);
-			break;
+			break ;
 		}
-		else
+		else if (pars == -2)
 		{
-			std::cerr << BLEU << "------------------------------------------------"<< BLANC << std::endl;
-			std::cerr << BLEU << "RECEPTION"<< BLANC << std::endl;
-			std::cerr << BLEU << "source fd : (" << this->_pfds[i].fd << ")" << BLANC << std::endl;
-			std::cerr << BLEU << "taille    : ("<< len << "bits)"<< BLANC << std::endl;
-			std::cerr << BLEU << "message   : ("<< line << ")"<< BLANC << std::endl;
-			std::cerr << BLEU << "------------------------------------------------"<< BLANC << std::endl;
+			std::cout << "ERROR commande channel" << std::endl;
+			break ;
 		}
 		if (rc < 0)
 		{

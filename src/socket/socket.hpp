@@ -6,7 +6,7 @@
 /*   By: mbonnet <mbonnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 09:52:18 by mbonnet           #+#    #+#             */
-/*   Updated: 2022/05/18 11:38:40 by mbonnet          ###   ########.fr       */
+/*   Updated: 2022/05/18 14:40:30 by mbonnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,10 @@ public:
 	void	AddClient(void);				//ajoute les client 
 	void	protocolReception(int i);		//receptionne les message
 	int		Reception(std::string *line, int *len, int i);
-	void	parsing(int i);					//traitement des information receptionner
-	void	printReception(int i);			//ecriture de la reception
+	int		parsing(int i, std::string line);					//traitement des information receptionner
+	void	printReception(int i, int len, std::string line);			//ecriture de la reception
+	int		managementOrdered(int i, std::string line);
+
 private:
 	int					_port;
 	std::string			_password;
