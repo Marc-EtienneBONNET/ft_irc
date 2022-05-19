@@ -6,7 +6,7 @@
 /*   By: mbonnet <mbonnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 09:52:15 by mbonnet           #+#    #+#             */
-/*   Updated: 2022/05/19 11:42:32 by mbonnet          ###   ########.fr       */
+/*   Updated: 2022/05/19 17:50:25 by mbonnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void Server::run(void)
 			else
 			{
 					this->protocolReception(i);
-					this->sendMessage(i,"<nickname> :No such nick/channel");
+					this->sendMessage(i,"MESSAGE coucou\r\n");
 			}
 		}
 	} while (1);
@@ -168,7 +168,7 @@ void	Server::sendMessage(int i, std::string msg)
 {
 	int c;
 	(void)msg;
-	if ((c = send(this->_pfds[i].fd, "marc-etiennebonnet :No such nick/channel" , 7 , 0)) < 0)
+	if ((c = send(this->_pfds[i].fd, msg.c_str() , msg.size() , 0)) < 0)
 		std::cout << "retour c : " << c << std::endl;
 	std::cout << "retour c : " << c << std::endl;
 }
