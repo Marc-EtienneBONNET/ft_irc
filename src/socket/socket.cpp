@@ -6,17 +6,11 @@
 /*   By: mbonnet <mbonnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 09:52:15 by mbonnet           #+#    #+#             */
-/*   Updated: 2022/05/20 15:03:28 by mbonnet          ###   ########.fr       */
+/*   Updated: 2022/05/20 15:27:35 by mbonnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "socket.hpp"
-
-//message type de server
-void	msgServer(std::string str)
-{
-	std::cerr << PURPLE << "---SERVER---  " << str << CLEAR << std::endl;
-}
 
 //initialisation avec un controle du port et du password donner
 Server::Server(std::string port, std::string password) : _password(password)
@@ -34,11 +28,19 @@ Server::Server(std::string port, std::string password) : _password(password)
 	this->_init();
 }
 
-//close du server avec close de chaque fd
 Server::~Server()
 {
 	for (int i = 0; this->_pfds[i].fd > 0; i++)
 		close(this->_pfds[i].fd);
 }
 
+pollfd *Server::_create_pfd(int fd)
+{
+	pollfd pfd;
 
+	pfd.fd = fd;
+	pfd.events = POLLIN;
+	pfd.revents = 0;
+	this->_pfds.push_back(pfd);
+	return ((this->_pfds.end() - 1).base());
+}

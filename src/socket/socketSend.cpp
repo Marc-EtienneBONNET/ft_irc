@@ -6,14 +6,14 @@
 /*   By: mbonnet <mbonnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/20 07:38:13 by mbonnet           #+#    #+#             */
-/*   Updated: 2022/05/20 15:05:04 by mbonnet          ###   ########.fr       */
+/*   Updated: 2022/05/20 15:07:42 by mbonnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "socket.hpp"
 #include "../irc.hpp"
 
-void	Server::_sendMessage(pollfd pfd, int reply_code ,std::string user, std::string msg)
+void	Server::_send_message(pollfd pfd, int reply_code ,std::string user, std::string msg)
 {
 	int c;
 

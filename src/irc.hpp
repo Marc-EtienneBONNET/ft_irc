@@ -6,7 +6,7 @@
 /*   By: mbonnet <mbonnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 09:52:29 by mbonnet           #+#    #+#             */
-/*   Updated: 2022/05/20 14:58:44 by mbonnet          ###   ########.fr       */
+/*   Updated: 2022/05/20 15:14:52 by mbonnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # define PURPLE "\e[1;35m"
 # define GREEN "\e[1;32m"
 
-//# define LOG(color, output, msg) output << color << msg << CLEAR << std::endl
+# define LOG(color, output, msg) output << color << "SERVER-> " << msg << CLEAR << std::endl
 
 # define ERROR(msg) LOG(RED, std::cerr, msg)
 # define WARNING(msg) LOG(YELLOW, std::cerr, msg)
@@ -33,6 +33,7 @@
 
 #define SERVER_PORT 10000
 #define TIME 3 * 60 * 1000
+#define BUFFER_SIZE 512
 
 #include <iostream>
 #include <arpa/inet.h>

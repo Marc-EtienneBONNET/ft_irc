@@ -6,7 +6,7 @@
 /*   By: mbonnet <mbonnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/20 07:38:13 by mbonnet           #+#    #+#             */
-/*   Updated: 2022/05/20 15:04:54 by mbonnet          ###   ########.fr       */
+/*   Updated: 2022/05/20 18:19:56 by mbonnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,69 +14,38 @@
 
 
 //receptionne les message 
-void	Server::_protocol_Reception(int i)
+void	Server::_protocol_reception(int i)
 {
-	int rc;
-	do
-	{
-		std::string line;
-		int len = 0;
-		rc = this->_Reception(&line, &len, i);
-		int pars = this->_parsing(i, line);
-		if (pars == 1)
-			this->_print_Reception(i, len, line);
-		else if (pars == -1)
-		{
-			this->_closedAndPreventClient(i);
-			break ;
-		}
-		else if (pars == -2)
-		{
-			std::cout << "ERROR commande channel" << std::endl;
-			break ;
-		}
-		if (rc < 0)
-		{
-			if (errno != EWOULDBLOCK)
-				throw std::runtime_error(RED"recv() failed"CLEAR);
-			break;
-		}
+	//do
+	//{
+		std::pair<char[BUFFER_SIZE], char[BUFFER_SIZE]> data;
+		_client[i].parsing(_client[i].reception());
+		(void)data;
+		//if (pars == 1)
+		//	this->_print_reception(i, len, line);
+		//else if (pars == -1)
+		//{
+		//	this->_close_and_prevent_client(i);
+		//	break ;
+		//}
+		// else if (pars == -2)
+		// {
+		// 	std::cout << "ERROR commande channel" << std::endl;
+		// 	break ;
+		// }
+		// if (rc < 0)
+		// {
+		// 	if (errno != EWOULDBLOCK)
+		// 		throw std::runtime_error(RED"recv() failed"CLEAR);
+		// 	break;
+		// }
 		
-	} while(true);
+	//} while(true);
 }
 
-int	Server::_Reception(std::string *line, int *len, int i)
-{
-	char buffer[1];
-	int rc = 0;
 
-	memset(&buffer, 0, 1);
-	while ((rc = recv(this->_pfds[i].fd, buffer, sizeof(char), 0)) >= 0)
-	{
-		if (buffer[0] == 13 || buffer[0] == 10)
-			buffer[0] = '\0';
-		(*line) += buffer[0];
-		*len += rc; 
-		memset(&buffer, 0, 1);
-	}
-	std::cout << std::endl;
-	return (rc);
-} 
 
-int	Server::_parsing(int i, std::string line)
-{
-	if (this->_client[i].getIdentify() == false)
-		return (this->_managementOrdered(i, line));
-	else if (this->_client[i].getIdentify() == true)
-		return (this->_managementOrdered(i, line));
-	else if (this->_client[i].getIdentify() == true)
-		return (1);
-	//else if (this->_client[i].getIdentify() == true && line == "/end")
-	//	return (-1);
-	return (-1);
-}
-
-int		Server::_managementOrdered(int i, std::string line)
+int		Server::_management_ordered(int i, std::string line)
 {
 	std::string cmd;
 	std::string parametre;
@@ -116,7 +85,7 @@ int		Server::_managementOrdered(int i, std::string line)
 }
 
 
-void	Server::_print_Reception(int i, int len, std::string line)
+void	Server::_print_reception(int i, int len, std::string line)
 {
 	std::cerr << BLUE << "------------------------------------------------"<< CLEAR << std::endl;
 	std::cerr << BLUE << "RECEPTION"<< CLEAR << std::endl;
