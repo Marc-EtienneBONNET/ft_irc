@@ -4,6 +4,10 @@ FLAGS=-Wall -Werror -Wextra -std=c++98
 
 LIB=	src/utils/utils.cpp \
 		src/socket/socket.cpp\
+		src/socket/socketAddCloseClient.cpp\
+		src/socket/socketSend.cpp\
+		src/socket/socketInit.cpp\
+		src/socket/socketReception.cpp\
 		src/client/client.cpp\
 
 

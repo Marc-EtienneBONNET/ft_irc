@@ -6,7 +6,7 @@
 /*   By: mbonnet <mbonnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 09:53:33 by mbonnet           #+#    #+#             */
-/*   Updated: 2022/05/19 10:37:43 by mbonnet          ###   ########.fr       */
+/*   Updated: 2022/05/20 09:00:09 by mbonnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,49 @@
 class Client
 {
 public:
-	Client(void) : _fd(-1), _channel(-1), _identify(false), _username(""), _nickname("") {(void)this->_fd;(void)this->_channel;(void)this->_identify;(void)this->_nickname;(void)this->_username;};
-	Client(int fd) : _fd(fd), _channel(-1), _identify(false), _username(""), _nickname("") {};
-	int				getFd(void){return (this->_fd);};
-	int				getChannel(void){return (this->_channel);};
-	bool			getIdentify(void){return (this->_identify);};
-	std::string		getUsername(void){return (this->_username);};
-	std::string		getNickname(void){return (this->_nickname);};
-	void			setFd(int fd){this->_fd = fd;};
-	void			setChannel(int channel){std::cout << VERT << "Nouveau channel : " << channel << BLANC << std::endl;this->_channel = channel;};
-	void			setIdentify(bool iden){if (this->_identify == false) std::cout << VERT << "Moth de passe correcte" << BLANC << std::endl; this->_identify = iden;};
-	void			setUsername(std::string username){std::cout << VERT << "Nouveau username : " << username << BLANC << std::endl;this->_username = username;};
-	void			setNickname(std::string nickname){std::cout << VERT << "Nouveau nickname : " << nickname << BLANC << std::endl;this->_nickname = nickname;};
+	Client(void);
+	Client(int fd);
+	// template<typename T>
+	// T				get(std::string arg)
+	// {
+	// 	if (arg == "_fd")
+	// 		return (this->_fd);
+	// 	else if (arg == "_channel")
+	// 		return (this->_channel);
+	// 	else if (arg == "_identify")
+	// 		return (this->_identify);
+	// 	else if (arg == "_username")
+	// 		return (this->_username);
+	// 	else if (arg == "_nickname")
+	// 		return (this->_nickname);
+	// };
+	int				getFd(void);
+	int				getChannel(void);
+	bool			getIdentify(void);
+	std::string		getUsername(void);
+	std::string		getNickname(void);
+	//template<typename T>
+	// void			set(std::string arg, T newVal)
+	// {
+	// 	if (arg == "_fd")
+	// 		this->_fd = newVal;
+	// 	else if (arg == "_channel")
+	// 		this->_channel = newVal;
+	// 	else if (arg == "_identify")
+	// 		this->_identify = newVal;
+	// 	else if (arg == "_username")
+	// 		this->_username = newVal;
+	// 	else if (arg == "_nickname")
+	// 		this->_nickname = newVal;
+	// };
+	void			setFd(int fd);
+	void			setChannel(int channel);
+	void			setIdentify(bool iden);
+	void			setUsername(std::string username);
+	void			setNickname(std::string nickname);
 	void			printPara(void);
 
-	~Client(void){};
+	~Client(void);
 private:
 	int			_fd;
 	int			_channel;
