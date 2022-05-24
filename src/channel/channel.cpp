@@ -1,22 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.hpp                                          :+:      :+:    :+:   */
+/*   channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbonnet <mbonnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/18 09:52:26 by mbonnet           #+#    #+#             */
-/*   Updated: 2022/05/18 14:57:54 by mbonnet          ###   ########.fr       */
+/*   Created: 2022/05/23 14:20:08 by mbonnet           #+#    #+#             */
+/*   Updated: 2022/05/23 17:56:19 by mbonnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILS_HPP
-#define UTILS_HPP
+#include "channel.hpp"
 
-#include <vector>
-#include <iostream>
+Channel::Channel(void) : _topic(""), _password(""), _mode('\0')
+{
+	(void)_mode;
+	(void)_topic;
+	(void)_password;
+	(void)_black_list;
+}
 
-std::vector<std::string> split(const char *str, char c);
-bool whitesapece(char c);
+void	Channel::add_client(Client *client)
+{
+	this->_clients.push_back(client);
+}
 
-#endif 
+

@@ -6,7 +6,7 @@
 /*   By: mbonnet <mbonnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 09:52:33 by mbonnet           #+#    #+#             */
-/*   Updated: 2022/05/20 15:02:35 by mbonnet          ###   ########.fr       */
+/*   Updated: 2022/05/18 09:52:34 by mbonnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int main(int ac, const char **av, const char **envp)
 	}
 	catch (const std::exception &e)
 	{
-		std::cerr << e.what() << std::endl;
+		ERROR(e.what());
 		return (1);
 	}
 	return (0);

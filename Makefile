@@ -1,14 +1,17 @@
 
 CC=clang++
-FLAGS=-Wall -Werror -Wextra -std=c++98
+FLAGS=-Wall -Werror -Wextra -std=c++98 -g
+
+COMMAND=	src/command/command.cpp \
+			src/command/exception.cpp
 
 LIB=	src/utils/utils.cpp \
 		src/socket/socket.cpp\
-		src/socket/socketAddCloseClient.cpp\
-		src/socket/socketSend.cpp\
-		src/socket/socketInit.cpp\
-		src/socket/socketReception.cpp\
 		src/client/client.cpp\
+		src/request/request.cpp \
+		src/response/response.cpp \
+		src/channel/channel.cpp \
+		$(COMMAND)
 
 
 OBJS_LIB=$(LIB:.cpp=.o)
